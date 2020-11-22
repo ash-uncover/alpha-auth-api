@@ -1,0 +1,48 @@
+{
+  "name": "alpha-auth-api",
+  "version": "1.0.0",
+  "description": "",
+  "author": "aSh <ash.uncover@gmail.com>",
+  "license": "ISC",
+  "main": "index.ts",
+  "scripts": {
+    "start": "node --inspect=5858 -r ts-node/register ./src/index.ts",
+    "watch": "nodemon --inspect './src/index'",
+    "build": "tsc",
+    "test": "jest",
+    "test-coverage": "jest --coverage"
+  },
+  "dependencies": {
+    "@uncover/js-utils": "latest",
+    "@uncover/js-utils-logger": "latest",
+    "express": "latest",
+    "express-graphql": "latest",
+    "graphql": "latest",
+    "mongoose": "latest"
+  },
+  "devDependencies": {
+    "@types/express": "latest",
+    "@types/jest": "latest",
+    "@types/node": "latest",
+    "eslint": "latest",
+    "eslint-plugin-import": "latest",
+    "jest": "latest",
+    "nodemon": "latest",
+    "ts-jest": "latest",
+    "ts-node": "latest",
+    "typescript": "latest"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "**/*.test.ts",
+      "**/*.spec.ts",
+      ".git",
+      "node_modules"
+    ],
+    "watch": [
+      "src"
+    ],
+    "exec": "npm start",
+    "ext": "ts"
+  }
+}
