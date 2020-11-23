@@ -3,3 +3,4 @@ __coverage__
 /build
 .deployment
 .vscode
+config.json

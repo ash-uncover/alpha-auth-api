@@ -1,19 +1,11 @@
 import * as mongoose from 'mongoose'
 import Logger from '@uncover/js-utils-logger'
 
-let CONFIG = {
-  connectionString: ''
-}
-
-try {
-  CONFIG = require('./database.config.json')
-} catch (error) {
-  console.error('Database configuration is not defined on this system')
-}
+import CONFIG from '../configuration'
 
 const LOGGER = new Logger('Mongo Connection')
 
-let urlmongo = CONFIG.connectionString
+let urlmongo = CONFIG.ALPHA_AUTH_DATABASE_CONN
 
 const connection = {
   open: (callback) => {
