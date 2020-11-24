@@ -70,6 +70,10 @@ export const getAuth = (req: any, res: any, next: any) => {
   res.status(HttpUtils.HttpStatus.OK).send({ userId: req.__context.userId })
 }
 
+export const deleteAuth = (req: any, res: any, next: any) => {
+  res.status(HttpUtils.HttpStatus.OK).send()
+}
+
 export const useDebugRequest = function(req: any, res: any, next: any) {
   LOGGER.info(`${req.method} ${req.url}`)
   if (req.body) {
@@ -99,6 +103,7 @@ app.use(express.json())
 
 // Auth end point
 app.get('/auth', getAuth)
+app.delete('/auth', deleteAuth)
 
 addAccountsRoutes(app)
 addMessagesRoutes(app)
