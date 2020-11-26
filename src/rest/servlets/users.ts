@@ -5,7 +5,6 @@ import ERRORS, {
 } from '../servlet-error'
 
 import {
-  defaultGetAll,
   defaultPost,
   defaultGet,
   defaultPut,
