@@ -6,9 +6,9 @@
   "license": "ISC",
   "main": "index.ts",
   "scripts": {
-    "start": "node --inspect=5858 -r ts-node/register ./src/index.ts",
-    "watch": "nodemon --inspect './src/index'",
     "build": "tsc",
+    "start": "node --inspect=5858 -r ts-node/register ./src/index.ts",
+    "start:dev": "nodemon --inspect './src/index'",
     "test": "jest",
     "test-coverage": "jest --coverage"
   },

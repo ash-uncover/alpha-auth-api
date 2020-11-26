@@ -1,6 +1,6 @@
 **/node_modules
 __coverage__
-/build
+/dist
 .deployment
 .vscode
 config.json
