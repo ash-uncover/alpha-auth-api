@@ -56,10 +56,6 @@ export const usersSchema = new mongoose.Schema(Object.assign({
   description: { type: String },
   relations: [{ userId: String, status: String }],
 }, defaultSchema))
-usersSchema.methods.getPublicFields = function () {
-  console.log(this)
-  this.select('-_id -__v')
-}
 usersSchema.pre('save', preSave)
 export const users = mongoose.model('users', usersSchema)
 
