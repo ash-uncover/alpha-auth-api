@@ -17,8 +17,15 @@ export const RESERVED_FIELDS = [
   'id',
 ]
 
-export const removeReserved = function (data) {
-  RESERVED_FIELDS.forEach(function (field) {
+export const removeReserved = (data) => {
+  RESERVED_FIELDS.forEach((field) => {
+    delete data[field]
+  })
+  return data
+}
+
+export const removePrivate = (data) => {
+  ['_id', '__v', '_deleted'].forEach((field) => {
     delete data[field]
   })
   return data
@@ -46,11 +53,15 @@ export const accounts = mongoose.model('accounts', accountsSchema)
 // Users collection
 export const usersSchema = new mongoose.Schema(Object.assign({
   name: { type: String, required: true },
-  description: { type: String, required: true },
+  description: { type: String },
   relations: [{ userId: String, status: String }],
 }, defaultSchema))
-accountsSchema.pre('save', preSave)
-export const users = mongoose.model('users', accountsSchema)
+usersSchema.methods.getPublicFields = function () {
+  console.log(this)
+  this.select('-_id -__v')
+}
+usersSchema.pre('save', preSave)
+export const users = mongoose.model('users', usersSchema)
 
 // Threads collection
 export const threadsSchema = new mongoose.Schema(Object.assign({
