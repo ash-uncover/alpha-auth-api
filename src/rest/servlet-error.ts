@@ -1,7 +1,7 @@
 
 export const sendError = (logger, res, error) => {
   logger.debug(`HTTP ${error.status} - ${error.error}`)
-  res.send(error.status, error)
+  res.status(error.status).send(error)
 }
 
 const ERRORS = {
