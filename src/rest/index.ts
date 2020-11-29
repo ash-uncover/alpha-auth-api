@@ -13,6 +13,7 @@ import {
 
 import addAccountsRoutes from './servlets/accounts'
 import addMessagesRoutes from './servlets/messages'
+import addRelationsRoutes from './servlets/relations'
 import addThreadsRoutes from './servlets/threads'
 import addUsersRoutes from './servlets/users'
 
@@ -107,6 +108,7 @@ app.delete('/auth', deleteAuth)
 
 addAccountsRoutes(app)
 addMessagesRoutes(app)
+addRelationsRoutes(app)
 addThreadsRoutes(app)
 addUsersRoutes(app)
 
