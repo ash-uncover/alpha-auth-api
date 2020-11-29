@@ -104,6 +104,13 @@ export const deleteUser = function(req, res, next) {
   }
 }
 
+export const getUserRelations = function(req, res, next) {
+  try {
+    defaultGetDeep(SCHEMAS.RELATIONS, req, res, next, null)
+  } catch (error) {
+    res.send(500, error)
+  }
+}
 export const getUserThreads = function(req, res, next) {
   try {
     defaultGetDeep(SCHEMAS.THREADS, req, res, next, null)
@@ -118,6 +125,8 @@ const addRoutes = (app) => {
   app.patch('/rest/users/:userId', patchUser)
   app.delete('/rest/users/:userId', deleteUser)
 
+  app.get('/rest/users/:userId/relations', getUserRelations)
   app.get('/rest/users/:userId/threads', getUserThreads)
 }
+
 export default addRoutes

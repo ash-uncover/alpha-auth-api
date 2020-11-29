@@ -54,10 +54,18 @@ export const accounts = mongoose.model('accounts', accountsSchema)
 export const usersSchema = new mongoose.Schema(Object.assign({
   name: { type: String, required: true },
   description: { type: String },
-  relations: [{ userId: String, status: String }],
 }, defaultSchema))
 usersSchema.pre('save', preSave)
 export const users = mongoose.model('users', usersSchema)
+
+// Relations collection
+export const relationsSchema = new mongoose.Schema(Object.assign({
+  userId: { type: String, required: true },
+  relationId: { type: String, required: true },
+  status: { type: String, required: true },
+}, defaultSchema))
+relationsSchema.pre('save', preSave)
+export const relations = mongoose.model('relations', relationsSchema)
 
 // Threads collection
 export const threadsSchema = new mongoose.Schema(Object.assign({
@@ -90,6 +98,11 @@ const SCHEMAS = {
     model: users,
     name: 'user',
     collection: 'users',
+  },
+  RELATIONS: {
+    model: relations,
+    name: 'relation',
+    collection: 'relations',
   },
   THREADS: {
     model: threads,
