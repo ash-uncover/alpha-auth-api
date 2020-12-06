@@ -2,15 +2,15 @@ import * as mongoose from 'mongoose'
 import { UUID } from '@uncover/js-utils'
 
 // Common stuf
-const defaultSchema = {
+const SchemaBase = {
   id: { type: String },
   _creationDate: { type: Date },
   _lastUpdateDate: { type: Date }
 }
-interface defaultDoc extends mongoose.Document {
-  id: { type: String, required: true },
-  _creationDate: { type: Date },
-  _lastUpdateDate: { type: Date }
+interface DocumentBase extends mongoose.Document {
+  id: String,
+  _creationDate:  Date,
+  _lastUpdateDate: Date
 }
 
 export const RESERVED_FIELDS = [
@@ -51,7 +51,7 @@ export const accountsSchema = new mongoose.Schema(Object.assign({
   type: { type: String, required: true },
   userId: { type: String, required: true },
   status: { type: String, required: true },
-}, defaultSchema))
+}, SchemaBase))
 accountsSchema.pre('save', preSave)
 export const accounts = mongoose.model('accounts', accountsSchema)
 
@@ -60,30 +60,30 @@ export const usersSchema = new mongoose.Schema(Object.assign({
   name: { type: String, required: true },
   avatar: { type: String },
   description: { type: String },
-}, defaultSchema))
+}, SchemaBase))
 usersSchema.pre('save', preSave)
 export const users = mongoose.model('users', usersSchema)
 
 // Relations collection
-export interface relationDoc extends defaultDoc {
-  userId: { type: String, required: true },
-  relationId: { type: String, required: true },
-  status: { type: String, required: true }
+export interface IRelation extends DocumentBase {
+  userId: String,
+  relationId: String,
+  status: String
 }
-export const relationsSchema = new mongoose.Schema(Object.assign({
+export const RelationSchema = new mongoose.Schema(Object.assign({
   userId: { type: String, required: true },
   relationId: { type: String, required: true },
   status: { type: String, required: true },
-}, defaultSchema))
-relationsSchema.pre('save', preSave)
-export const relations = mongoose.model<relationDoc>('relations', relationsSchema)
+}, SchemaBase))
+RelationSchema.pre('save', preSave)
+export const relations = mongoose.model<IRelation>('relations', RelationSchema)
 
 // Threads collection
 export const threadsSchema = new mongoose.Schema(Object.assign({
   name: { type: String, required: true },
   type: { type: String, required: true },
   userId: { type: [String] },
-}, defaultSchema))
+}, SchemaBase))
 threadsSchema.pre('save', preSave)
 export const threads = mongoose.model('threads', threadsSchema)
 
@@ -94,7 +94,7 @@ export const messagesSchema = new mongoose.Schema(Object.assign({
   text: { type: String },
   date: { type: Date },
   readBy: { type: [String] },
-}, defaultSchema))
+}, SchemaBase))
 messagesSchema.pre('save', preSave)
 export const messages = mongoose.model('messages', messagesSchema)
 
