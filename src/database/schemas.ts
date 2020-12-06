@@ -53,6 +53,7 @@ export const accounts = mongoose.model('accounts', accountsSchema)
 // Users collection
 export const usersSchema = new mongoose.Schema(Object.assign({
   name: { type: String, required: true },
+  avatar: { type: String },
   description: { type: String },
 }, defaultSchema))
 usersSchema.pre('save', preSave)
