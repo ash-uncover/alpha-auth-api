@@ -46,13 +46,14 @@ export const defaultGet = async (schema, req, res, next, onError) => {
 export const defaultPut = async (schema, req, res, next, onError) => {
   const id = req.params[`${schema.name}Id`]
   try {
-    const data = await schema.model.findOne({ id }).exec()
+    let data = await schema.model.findOne({ id }).exec()
     if (data) {
       Object.assign(data, removeReserved(req.body))
+      await data.save()
+      data = await schema.model.findOne({ id }).select('-_id -__v').exec()
+      data ? res.json(data) : res.sendStatus(HttpUtils.HttpStatus.NOT_FOUND)
     } else {
       res.sendStatus(HttpUtils.HttpStatus.NOT_FOUND)
-      await data.save()
-      res.json(removePrivate(Object.assign({}, data._doc)))
     }
   } catch (error) {
     handleError(error, res, onError)
@@ -62,11 +63,11 @@ export const defaultPut = async (schema, req, res, next, onError) => {
 export const defaultPatch = async (schema, req, res, next, onError) => {
   const id = req.params[`${schema.name}Id`]
   try {
-    const data = await schema.model.findOne({ id }).exec()
+    let data = await schema.model.findOne({ id }).exec()
     if (data) {
       Object.assign(data, removeReserved(req.body))
-      await data.save()
-      res.json(removePrivate(Object.assign({}, data._doc)))
+      data = await schema.model.findOne({ id }).select('-_id -__v').exec()
+      data ? res.json(data) : res.sendStatus(HttpUtils.HttpStatus.NOT_FOUND)
     } else {
       res.sendStatus(HttpUtils.HttpStatus.NOT_FOUND)
     }

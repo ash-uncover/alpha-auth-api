@@ -3,12 +3,12 @@ import { UUID } from '@uncover/js-utils'
 
 // Common stuf
 const SchemaBase = {
-  id: { type: String },
+  id: { type: String, required: true },
   _creationDate: { type: Date },
   _lastUpdateDate: { type: Date }
 }
 interface DocumentBase extends mongoose.Document {
-  id: String,
+  id: string,
   _creationDate:  Date,
   _lastUpdateDate: Date
 }
@@ -66,9 +66,9 @@ export const users = mongoose.model('users', usersSchema)
 
 // Relations collection
 export interface IRelation extends DocumentBase {
-  userId: String,
-  relationId: String,
-  status: String
+  userId: string,
+  relationId: string,
+  status: string
 }
 export const RelationSchema = new mongoose.Schema(Object.assign({
   userId: { type: String, required: true },
