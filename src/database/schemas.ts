@@ -7,6 +7,11 @@ const defaultSchema = {
   _creationDate: { type: Date },
   _lastUpdateDate: { type: Date }
 }
+interface defaultDoc extends mongoose.Document {
+  id: { type: String, required: true },
+  _creationDate: { type: Date },
+  _lastUpdateDate: { type: Date }
+}
 
 export const RESERVED_FIELDS = [
   '_id',
@@ -60,13 +65,18 @@ usersSchema.pre('save', preSave)
 export const users = mongoose.model('users', usersSchema)
 
 // Relations collection
+export interface relationDoc extends defaultDoc {
+  userId: { type: String, required: true },
+  relationId: { type: String, required: true },
+  status: { type: String, required: true }
+}
 export const relationsSchema = new mongoose.Schema(Object.assign({
   userId: { type: String, required: true },
   relationId: { type: String, required: true },
   status: { type: String, required: true },
 }, defaultSchema))
 relationsSchema.pre('save', preSave)
-export const relations = mongoose.model('relations', relationsSchema)
+export const relations = mongoose.model<relationDoc>('relations', relationsSchema)
 
 // Threads collection
 export const threadsSchema = new mongoose.Schema(Object.assign({
