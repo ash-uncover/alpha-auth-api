@@ -2,12 +2,12 @@ import * as mongoose from 'mongoose'
 import { UUID } from '@uncover/js-utils'
 
 // Common stuf
-const SchemaBase = {
+export const SchemaBase = {
   id: { type: String, required: true },
   _creationDate: { type: Date },
   _lastUpdateDate: { type: Date }
 }
-interface DocumentBase extends mongoose.Document {
+export interface DocumentBase extends mongoose.Document {
   id: string,
   _creationDate:  Date,
   _lastUpdateDate: Date
@@ -36,7 +36,7 @@ export const removePrivate = (data) => {
   return data
 }
 
-const preSave = function (next) {
+export const preSave = function (next) {
   let now = new Date()
   this.id || (this.id = UUID.next())
   this._creationDate || (this._creationDate = now)
@@ -44,31 +44,52 @@ const preSave = function (next) {
   next()
 }
 
+
 // Accounts collection
-export const accountsSchema = new mongoose.Schema(Object.assign({
+export const AccountName = 'account'
+export const AccountCollection = `${AccountName}s`
+export interface IAccount extends DocumentBase {
+  username: string,
+  password: string,
+  type: string,
+  userId: string,
+  status: string,
+}
+export const AccountSchema = new mongoose.Schema(Object.assign({
   username: { type: String, required: true },
   password: { type: String, required: true },
   type: { type: String, required: true },
   userId: { type: String, required: true },
   status: { type: String, required: true },
 }, SchemaBase))
-accountsSchema.pre('save', preSave)
-export const accounts = mongoose.model('accounts', accountsSchema)
+AccountSchema.pre('save', preSave)
+export const AccountModel = mongoose.model<IAccount>(AccountCollection, AccountSchema)
+
 
 // Users collection
-export const usersSchema = new mongoose.Schema(Object.assign({
+export const UserName = 'user'
+export const UserCollection = `${UserName}s`
+export interface IUser extends DocumentBase {
+  name: string,
+  avatar: string,
+  description: string,
+}
+export const UserSchema = new mongoose.Schema(Object.assign({
   name: { type: String, required: true },
   avatar: { type: String },
   description: { type: String },
 }, SchemaBase))
-usersSchema.pre('save', preSave)
-export const users = mongoose.model('users', usersSchema)
+UserSchema.pre('save', preSave)
+export const UserModel = mongoose.model<IUser>(UserCollection, UserSchema)
+
 
 // Relations collection
+export const RelationName = 'relation'
+export const RelationCollection = `${RelationName}s`
 export interface IRelation extends DocumentBase {
   userId: string,
   relationId: string,
-  status: string
+  status: string,
 }
 export const RelationSchema = new mongoose.Schema(Object.assign({
   userId: { type: String, required: true },
@@ -76,54 +97,72 @@ export const RelationSchema = new mongoose.Schema(Object.assign({
   status: { type: String, required: true },
 }, SchemaBase))
 RelationSchema.pre('save', preSave)
-export const relations = mongoose.model<IRelation>('relations', RelationSchema)
+export const RelationModel = mongoose.model<IRelation>(RelationCollection, RelationSchema)
+
 
 // Threads collection
-export const threadsSchema = new mongoose.Schema(Object.assign({
+export const ThreadName = 'thread'
+export const ThreadCollection = `${ThreadName}s`
+export interface IThread extends DocumentBase {
+  name: string,
+  type: string,
+  userId: string[],
+}
+export const ThreadSchema = new mongoose.Schema(Object.assign({
   name: { type: String, required: true },
   type: { type: String, required: true },
   userId: { type: [String] },
 }, SchemaBase))
-threadsSchema.pre('save', preSave)
-export const threads = mongoose.model('threads', threadsSchema)
+ThreadSchema.pre('save', preSave)
+export const ThreadModel = mongoose.model(ThreadCollection, ThreadSchema)
 
 // Messages collection
-export const messagesSchema = new mongoose.Schema(Object.assign({
+export const MessageName = 'message'
+export const MessageCollection = `${MessageName}s`
+export interface IMessage extends DocumentBase {
+  threadId: string,
+  userId: string,
+  text: string,
+  date: Date,
+  readBy: string[],
+}
+export const MessageSchema = new mongoose.Schema(Object.assign({
   threadId: { type: String },
   userId: { type: String },
   text: { type: String },
   date: { type: Date },
   readBy: { type: [String] },
 }, SchemaBase))
-messagesSchema.pre('save', preSave)
-export const messages = mongoose.model('messages', messagesSchema)
+MessageSchema.pre('save', preSave)
+export const MessageModel = mongoose.model(MessageCollection, MessageSchema)
 
 
 const SCHEMAS = {
   ACCOUNTS: {
-    model: accounts,
-    name: 'account',
-    collection: 'accounts',
+    model: AccountModel,
+    name: AccountName,
+    collection: AccountCollection,
   },
   USERS: {
-    model: users,
-    name: 'user',
-    collection: 'users',
+    model: UserModel,
+    name: UserName,
+    collection: UserCollection,
   },
   RELATIONS: {
-    model: relations,
-    name: 'relation',
-    collection: 'relations',
+    model: RelationModel,
+    name: RelationName,
+    collection: RelationCollection,
   },
   THREADS: {
-    model: threads,
-    name: 'thread',
-    collection: 'threads',
+    model: ThreadModel,
+    name: ThreadName,
+    collection: ThreadCollection,
   },
   MESSAGES: {
-    model: messages,
-    name: 'message',
-    collection: 'messages',
+    model: MessageModel,
+    name: MessageName,
+    collection: MessageCollection,
   },
 }
+
 export default SCHEMAS

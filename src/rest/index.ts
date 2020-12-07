@@ -3,7 +3,7 @@ import * as express from 'express'
 import Logger from '@uncover/js-utils-logger'
 
 import {
-  accounts
+  AccountModel
 } from '../database/schemas'
 
 import {
@@ -55,7 +55,7 @@ export const useHeaders = (req: any, res: any, next: any) => {
 export const useAuth = function(req: any, res: any, next: any) {
   LOGGER.debug('useAuth')
   const account = EncodeUtils.decodeBasicHeader(req.headers.authorization)
-  accounts.findOne(account).select('-_id -__v').exec((err, data) => {
+  AccountModel.findOne(account).select('-_id -__v').exec((err, data) => {
     if (err) {
       res.status(HttpUtils.HttpStatus.ERROR).send(err)
     } else if (data) {

@@ -40,7 +40,8 @@ export const patchRelationAccept = async (req, res, next) => {
       Object.assign(data2, { status: 'ACTIVE' })
       await data1.save()
       await data2.save()
-      res.json(removePrivate(Object.assign({}, data1._doc)))
+      const data = await SCHEMAS.RELATIONS.model.findOne({ id }).select('-_id -__v').exec()
+      data ? res.json(data) : res.sendStatus(HttpUtils.HttpStatus.NOT_FOUND)
     }
   } catch (error) {
     handleError(error, res, null)
