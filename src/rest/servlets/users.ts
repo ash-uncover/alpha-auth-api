@@ -15,6 +15,17 @@ import {
 
 import Logger from '@uncover/js-utils-logger'
 const LOGGER = new Logger('REST-USERS')
+const multer = require('multer')
+
+export const postUserAvatar = function(req, res, next) {
+  const upload = multer({ dest:'uploads/' }).single('avatar')
+  upload(req, res, (error) => {
+    if(error) {
+      res.send(500, error)
+    }
+    res.status(200).json({file: req.file})
+  })
+}
 
 export const postUser = function(req, res, next) {
 
@@ -121,6 +132,7 @@ export const getUserThreads = function(req, res, next) {
 
 const addRoutes = (app) => {
   app.get('/rest/users/:userId', getUser)
+  app.post('/rest/users/:userId/avatar', postUserAvatar)
   app.put('/rest/users/:userId', putUser)
   app.patch('/rest/users/:userId', patchUser)
   app.delete('/rest/users/:userId', deleteUser)

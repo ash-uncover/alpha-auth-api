@@ -18,7 +18,10 @@
     "express": "latest",
     "express-graphql": "latest",
     "graphql": "latest",
-    "mongoose": "latest"
+    "mongoose": "latest",
+    "multer": "latest",
+    "nodemailer": "latest",
+    "uuid": "latest"
   },
   "devDependencies": {
     "@types/express": "latest",

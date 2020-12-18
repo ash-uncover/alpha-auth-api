@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose'
-import { UUID } from '@uncover/js-utils'
+import { v4 as uuidv4 } from 'uuid'
 
 // Common stuf
 export const SchemaBase = {
@@ -38,12 +38,11 @@ export const removePrivate = (data) => {
 
 export const preSave = function (next) {
   let now = new Date()
-  this.id || (this.id = UUID.next())
+  this.id || (this.id = uuidv4())
   this._creationDate || (this._creationDate = now)
   this._lastUpdateDate = now
   next()
 }
-
 
 // Accounts collection
 export const AccountName = 'account'
@@ -54,6 +53,8 @@ export interface IAccount extends DocumentBase {
   type: string,
   userId: string,
   status: string,
+  actionToken: string,
+  actionDate: Date,
 }
 export const AccountSchema = new mongoose.Schema(Object.assign({
   username: { type: String, required: true },
@@ -61,6 +62,8 @@ export const AccountSchema = new mongoose.Schema(Object.assign({
   type: { type: String, required: true },
   userId: { type: String, required: true },
   status: { type: String, required: true },
+  actionToken: { type: String },
+  actionDate: { type: Date },
 }, SchemaBase))
 AccountSchema.pre('save', preSave)
 export const AccountModel = mongoose.model<IAccount>(AccountCollection, AccountSchema)

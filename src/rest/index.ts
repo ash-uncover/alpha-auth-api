@@ -11,7 +11,13 @@ import {
   EncodeUtils,
 } from '@uncover/js-utils'
 
-import addAccountsRoutes from './servlets/accounts'
+import {
+  getAuth,
+  deleteAuth,
+  postAuthRegister,
+  putAuthRegister,
+} from './servlets/auth'
+
 import addMessagesRoutes from './servlets/messages'
 import addRelationsRoutes from './servlets/relations'
 import addThreadsRoutes from './servlets/threads'
@@ -67,14 +73,6 @@ export const useAuth = function(req: any, res: any, next: any) {
   })
 }
 
-export const getAuth = (req: any, res: any, next: any) => {
-  res.status(HttpUtils.HttpStatus.OK).send({ userId: req.__context.userId })
-}
-
-export const deleteAuth = (req: any, res: any, next: any) => {
-  res.status(HttpUtils.HttpStatus.OK).send()
-}
-
 export const useDebugRequest = function(req: any, res: any, next: any) {
   LOGGER.info(`${req.method} ${req.url}`)
   if (req.body) {
@@ -97,16 +95,19 @@ app.use(useHeaders)
 app.options('*', optionsRoute)
 
 app.use(useDebugRequest)
-app.use(useAuth)
 
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
+
+app.post('/auth/register', postAuthRegister)
+app.put('/auth/register', putAuthRegister)
+
+app.use(useAuth)
 
 // Auth end point
 app.get('/auth', getAuth)
 app.delete('/auth', deleteAuth)
 
-addAccountsRoutes(app)
 addMessagesRoutes(app)
 addRelationsRoutes(app)
 addThreadsRoutes(app)
