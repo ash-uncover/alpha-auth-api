@@ -5,7 +5,7 @@ import CONFIG from '../configuration'
 
 const LOGGER = new Logger('Mongo Connection')
 
-let urlmongo = CONFIG.ALPHA_AUTH_DATABASE_CONN
+const urlmongo = CONFIG.ALPHA_AUTH_DATABASE_CONN
 
 const connection = {
   open: (callback) => {

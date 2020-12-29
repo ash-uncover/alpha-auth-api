@@ -11,6 +11,8 @@ import {
   EncodeUtils,
 } from '@uncover/js-utils'
 
+import graphql from './graphql'
+
 import {
   getAuth,
   deleteAuth,
@@ -101,6 +103,8 @@ app.use(express.json())
 
 app.post('/auth/register', postAuthRegister)
 app.put('/auth/register', putAuthRegister)
+
+app.use('/graphql', graphql)
 
 app.use(useAuth)
 
