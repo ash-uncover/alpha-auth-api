@@ -1,20 +1,10 @@
 import { graphqlHTTP } from 'express-graphql'
-import { buildSchema } from 'graphql'
 
-export const schema =  buildSchema(`
-  type Query {
-    hello: String
-  }
-`)
-
-const root = {
-  hello: () => {
-    return 'Hello world!'
-  }
-}
+import schema from './schema'
+import * as rootValue from './resolvers'
 
 export default graphqlHTTP({
-  schema: schema,
-  rootValue: root,
+  schema,
+  rootValue,
   graphiql: true,
 })
