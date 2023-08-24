@@ -1,19 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "esModuleInterop": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "outDir": "dist",
     "sourceMap": true,
+    "target": "es6",
     "typeRoots": [
       "node_modules/@types"
     ]
   },
-
   "include": [
     "src/**/*.ts",
     "src/**/*.js"
   ],
-
   "exclude": [
     "node_modules",
     "test",

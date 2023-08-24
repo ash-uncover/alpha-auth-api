@@ -1,9 +1,10 @@
 import Logger from '@uncover/js-utils-logger'
+
 const LOGGER = new Logger('CONFIG')
 
 //
 const CONFIG = {
-  ALPHA_AUTH_DATABASE_CONN: '',
+  ALPHA_AUTH_DATABASE_CONN: 'mongodb://127.0.0.1:4242/auth',
 
   ALPHA_AUTH_REST_PROTOCOL: 'http',
   ALPHA_AUTH_REST_HOST: 'localhost',
@@ -36,8 +37,8 @@ try {
   LOGGER.warn('Failed to load from process.env')
 }
 
-console.log('== -----------------------------')
-Object.keys(CONFIG).forEach((key) => console.log(`== ${key}: ${CONFIG[key]}`))
-console.log('== -----------------------------')
+LOGGER.warn('== -----------------------------')
+Object.keys(CONFIG).forEach((key) => LOGGER.warn(`== ${key}: ${CONFIG[key]}`))
+LOGGER.warn('== -----------------------------')
 
 export default CONFIG

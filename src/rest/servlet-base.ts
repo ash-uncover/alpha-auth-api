@@ -79,8 +79,8 @@ export const defaultPatch = async (schema, req, res, next, onError) => {
 export const defaultDelete = async (schema, req, res, next, onError) => {
   const id = req.params[`${schema.name}Id`]
   try {
-    await schema.model.deleteOne({ id })
-    res.sendStatus(HttpUtils.HttpStatus.REMOVED)
+    const { deletedCount } = await schema.model.deleteOne({ id })
+    res.sendStatus(deletedCount ? HttpUtils.HttpStatus.REMOVED : HttpUtils.HttpStatus.NOT_FOUND)
   } catch (error) {
     handleError(error, res, onError)
   }

@@ -24,7 +24,7 @@ export const postAccount = async (req, res, next) => {
   await user.save()
   // create temporary account
   const accountData = removeReserved(req.body)
-  accountData.type = 'ALPHA'
+  accountData.type = 'AP'
   accountData.userId = user.id
   accountData.status = AccountStatus.REGISTERING
   accountData.actionToken = uuidv4()
