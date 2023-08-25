@@ -14,6 +14,7 @@ import {
 } from '../servlet-base'
 
 import Logger from '@uncover/js-utils-logger'
+import { HttpUtils } from '@uncover/js-utils'
 const LOGGER = new Logger('REST-USERS')
 const multer = require('multer')
 
@@ -21,14 +22,13 @@ export const postUserAvatar = function(req, res, next) {
   const upload = multer({ dest:'uploads/' }).single('avatar')
   upload(req, res, (error) => {
     if(error) {
-      res.send(500, error)
+      res.send(HttpUtils.HttpStatus.ERROR, error)
     }
-    res.status(200).json({file: req.file})
+    res.status(HttpUtils.HttpStatus.OK).json({file: req.file})
   })
 }
 
 export const postUser = function(req, res, next) {
-
   try {
     defaultPost(SCHEMAS.USERS, req, res, next, (error) => {
       if (error && error.code === 11000) {
@@ -39,7 +39,7 @@ export const postUser = function(req, res, next) {
         }
       } else if (error && error.name === 'ValidationError') {
         sendError(LOGGER, res, {
-          status: 400,
+          status: HttpUtils.HttpStatus.BAD_REQUEST,
           error: error.message
         })
       } else {
@@ -71,15 +71,15 @@ export const putUser = function(req, res, next) {
         }
       } else if (error && error.name === 'ValidationError') {
         sendError(LOGGER, res, {
-          status: 400,
+          status: HttpUtils.HttpStatus.BAD_REQUEST,
           error: error.message
         })
       } else {
-        res.send(500, error)
+        res.send(HttpUtils.HttpStatus.ERROR, error)
       }
     })
   } catch (error) {
-    res.send(500, error)
+    res.send(HttpUtils.HttpStatus.ERROR, error)
   }
 }
 
@@ -95,15 +95,15 @@ export const patchUser = function(req, res, next) {
         }
       } else if (error && error.name === 'ValidationError') {
         sendError(LOGGER, res, {
-          status: 400,
+          status: HttpUtils.HttpStatus.BAD_REQUEST,
           error: error.message
         })
       } else {
-        res.send(500, error)
+        res.send(HttpUtils.HttpStatus.ERROR, error)
       }
     })
   } catch (error) {
-    res.send(500, error)
+    res.send(HttpUtils.HttpStatus.ERROR, error)
   }
 }
 
@@ -111,11 +111,12 @@ export const deleteUser = function(req, res, next) {
   try {
     defaultDelete(SCHEMAS.USERS, req, res, next, null)
   } catch (error) {
-    res.send(500, error)
+    res.send(HttpUtils.HttpStatus.ERROR, error)
   }
 }
 
 const addRoutes = (app) => {
+  app.post('/rest/users', postUser)
   app.get('/rest/users/:userId', getUser)
   app.post('/rest/users/:userId/avatar', postUserAvatar)
   app.put('/rest/users/:userId', putUser)

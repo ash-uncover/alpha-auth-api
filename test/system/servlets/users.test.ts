@@ -41,19 +41,13 @@ describe('/users', () => {
     }
   })
 
-  describe('/:userId', () => {
+  describe('/', () => {
 
-    describe('GET ALL', () => {
+    describe('POST', () => {
 
-      test('', () => {
-      })
-    })
-
-    describe('GET', () => {
-
-      test('When no token is provided', () => {
+      test('when no token is provided', () => {
         return request(app)
-          .get(`/rest/users/${USER_1.id}`)
+          .post(`/rest/users`)
           .then(response => {
             expect(response.statusCode).toBe(HttpUtils.HttpStatus.UNAUTHORIZED)
           })
@@ -62,24 +56,12 @@ describe('/users', () => {
           })
       })
 
-      test('When accessing a user that does not exist', () => {
+      test('when payload format is invalid', () => {
         return request(app)
-          .get('/rest/users/dummy')
+          .post(`/rest/users`)
           .set({ Authorization: AUTH_TOKEN_1 })
           .then(response => {
-            expect(response.statusCode).toBe(HttpUtils.HttpStatus.NOT_FOUND)
-          })
-          .catch((error) => {
-            expect(error).toBe(null)
-          })
-      })
-
-      test('When a valid token is provided', () => {
-        return request(app)
-          .get(`/rest/users/${USER_1.id}`)
-          .set({ Authorization: AUTH_TOKEN_1 })
-          .then(response => {
-            expect(response.statusCode).toBe(HttpUtils.HttpStatus.OK)
+            expect(response.statusCode).toBe(HttpUtils.HttpStatus.BAD_REQUEST)
           })
           .catch((error) => {
             expect(error).toBe(null)
@@ -87,67 +69,158 @@ describe('/users', () => {
       })
     })
 
-    describe('PATCH', () => {
+    describe('/:userId', () => {
 
-      test('When no token is provided', () => {
-        return request(app)
-          .patch(`/rest/users/${USER_1.id}`)
-          .then(response => {
-            expect(response.statusCode).toBe(HttpUtils.HttpStatus.UNAUTHORIZED)
-          })
-          .catch((error) => {
-            expect(error).toBe(null)
-          })
+      describe('GET', () => {
+
+        test('When no token is provided', () => {
+          return request(app)
+            .get(`/rest/users/${USER_1.id}`)
+            .then(response => {
+              expect(response.statusCode).toBe(HttpUtils.HttpStatus.UNAUTHORIZED)
+            })
+            .catch((error) => {
+              expect(error).toBe(null)
+            })
+        })
+
+        test('When accessing a user that does not exist', () => {
+          return request(app)
+            .get('/rest/users/dummy')
+            .set({ Authorization: AUTH_TOKEN_1 })
+            .then(response => {
+              expect(response.statusCode).toBe(HttpUtils.HttpStatus.NOT_FOUND)
+            })
+            .catch((error) => {
+              expect(error).toBe(null)
+            })
+        })
+
+        test('When a valid token is provided', () => {
+          return request(app)
+            .get(`/rest/users/${USER_1.id}`)
+            .set({ Authorization: AUTH_TOKEN_1 })
+            .then(response => {
+              expect(response.statusCode).toBe(HttpUtils.HttpStatus.OK)
+            })
+            .catch((error) => {
+              expect(error).toBe(null)
+            })
+        })
       })
 
-      test('When accessing a user that does not exist', () => {
-        return request(app)
-          .patch('/rest/users/dummy')
-          .set({ Authorization: AUTH_TOKEN_1 })
-          .then(response => {
-            expect(response.statusCode).toBe(HttpUtils.HttpStatus.NOT_FOUND)
-          })
-          .catch((error) => {
-            expect(error).toBe(null)
-          })
-      })
-    })
+      describe('PATCH', () => {
 
-    describe('DELETE', () => {
+        test('When no token is provided', () => {
+          return request(app)
+            .patch(`/rest/users/${USER_1.id}`)
+            .then(response => {
+              expect(response.statusCode).toBe(HttpUtils.HttpStatus.UNAUTHORIZED)
+            })
+            .catch((error) => {
+              expect(error).toBe(null)
+            })
+        })
 
-      test('When no token is provided', () => {
-        return request(app)
-          .delete(`/rest/users/${USER_1.id}`)
-          .then(response => {
-            expect(response.statusCode).toBe(HttpUtils.HttpStatus.UNAUTHORIZED)
-          })
-          .catch((error) => {
-            expect(error).toBe(null)
-          })
-      })
-
-      test('When accessing a user that does not exist', () => {
-        return request(app)
-          .delete('/rest/users/dummy')
-          .set({ Authorization: AUTH_TOKEN_1 })
-          .then(response => {
-            expect(response.statusCode).toBe(HttpUtils.HttpStatus.NOT_FOUND)
-          })
-          .catch((error) => {
-            expect(error).toBe(null)
-          })
+        test('When accessing a user that does not exist', () => {
+          return request(app)
+            .patch('/rest/users/dummy')
+            .set({ Authorization: AUTH_TOKEN_1 })
+            .then(response => {
+              expect(response.statusCode).toBe(HttpUtils.HttpStatus.NOT_FOUND)
+            })
+            .catch((error) => {
+              expect(error).toBe(null)
+            })
+        })
       })
 
-      test('When deleting an existing user', () => {
-        return request(app)
-        .delete(`/rest/users/${USER_1.id}`)
-          .set({ Authorization: AUTH_TOKEN_1 })
-          .then(response => {
-            expect(response.statusCode).toBe(HttpUtils.HttpStatus.REMOVED)
-          })
-          .catch((error) => {
-            expect(error).toBe(null)
-          })
+      describe('DELETE', () => {
+
+        test('When no token is provided', () => {
+          return request(app)
+            .delete(`/rest/users/${USER_1.id}`)
+            .then(response => {
+              expect(response.statusCode).toBe(HttpUtils.HttpStatus.UNAUTHORIZED)
+            })
+            .catch((error) => {
+              expect(error).toBe(null)
+            })
+        })
+
+        test('When accessing a user that does not exist', () => {
+          return request(app)
+            .delete('/rest/users/dummy')
+            .set({ Authorization: AUTH_TOKEN_1 })
+            .then(response => {
+              expect(response.statusCode).toBe(HttpUtils.HttpStatus.NOT_FOUND)
+            })
+            .catch((error) => {
+              expect(error).toBe(null)
+            })
+        })
+
+        test('When deleting an existing user', () => {
+          return request(app)
+            .delete(`/rest/users/${USER_1.id}`)
+            .set({ Authorization: AUTH_TOKEN_1 })
+            .then(response => {
+              expect(response.statusCode).toBe(HttpUtils.HttpStatus.REMOVED)
+            })
+            .catch((error) => {
+              expect(error).toBe(null)
+            })
+        })
+      })
+
+      describe('/avatar', () => {
+
+        test('When not authentified', () => {
+          return request(app)
+            .post(`/rest/users/${USER_1.id}/avatar`)
+            .then(response => {
+              expect(response.statusCode).toBe(HttpUtils.HttpStatus.UNAUTHORIZED)
+            })
+            .catch((error) => {
+              expect(error).toBe(null)
+            })
+        })
+
+        test('When not authentified with the correct user', () => {
+          return request(app)
+            .post(`/rest/users/${USER_1.id}/avatar`)
+            .set({ Authorization: AUTH_TOKEN_1 })
+            .then(response => {
+              expect(response.statusCode).toBe(HttpUtils.HttpStatus.UNAUTHORIZED)
+            })
+            .catch((error) => {
+              expect(error).toBe(null)
+            })
+        })
+
+        test('When no data is sent', () => {
+          return request(app)
+            .post(`/rest/users/${USER_1.id}/avatar`)
+            .set({ Authorization: AUTH_TOKEN_1 })
+            .then(response => {
+              expect(response.statusCode).toBe(HttpUtils.HttpStatus.BAD_REQUEST)
+            })
+            .catch((error) => {
+              expect(error).toBe(null)
+            })
+        })
+
+        test('When updating the correct avatar', () => {
+          return request(app)
+            .post(`/rest/users/${USER_1.id}/avatar`)
+            .set({ Authorization: AUTH_TOKEN_1 })
+            .then(response => {
+              expect(response.statusCode).toBe(HttpUtils.HttpStatus.OK)
+            })
+            .catch((error) => {
+              expect(error).toBe(null)
+            })
+        })
       })
     })
   })
