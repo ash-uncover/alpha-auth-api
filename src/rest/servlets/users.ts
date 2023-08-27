@@ -10,7 +10,6 @@ import {
   defaultPut,
   defaultPatch,
   defaultDelete,
-  defaultGetDeep,
 } from '../servlet-base'
 
 import Logger from '@uncover/js-utils-logger'
@@ -32,7 +31,7 @@ export const postUser = function(req, res, next) {
   try {
     defaultPost(SCHEMAS.USERS, req, res, next, (error) => {
       if (error && error.code === 11000) {
-        if (error.message.indexOf('username') !== -1) {
+        if (error.message.indexOf('name') !== -1) {
           sendError(LOGGER, res, ERRORS.USER_USERNAME_INUSE)
         } else if (error.message.indexOf('email') !== -1) {
           sendError(LOGGER, res, ERRORS.USER_EMAIL_INUSE)
@@ -115,8 +114,12 @@ export const deleteUser = function(req, res, next) {
   }
 }
 
+const log = function (req, res, next) {
+  res.send(HttpUtils.HttpStatus.UNAUTHORIZED)
+}
+
 const addRoutes = (app) => {
-  app.post('/rest/users', postUser)
+  app.post('/rest/users', log, postUser)
   app.get('/rest/users/:userId', getUser)
   app.post('/rest/users/:userId/avatar', postUserAvatar)
   app.put('/rest/users/:userId', putUser)

@@ -17,6 +17,8 @@ import SCHEMAS, {
   IUser,
 } from "../../src/database/schemas";
 
+export const MONGO_CONNECTION = 'mongodb://127.0.0.1:4242/auth-test'
+
 export const AUTH_TOKEN_1 = 'Basic YTph'
 export const ACCOUNT_1: IAccount = {
   id: 'account1',

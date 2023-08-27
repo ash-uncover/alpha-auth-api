@@ -1,4 +1,6 @@
-import {
+import { Request } from 'express'
+
+import SCHEMAS, {
   removeReserved,
   removePrivate
 } from '../database/schemas'
@@ -9,6 +11,12 @@ import {
 
 import Logger from '@uncover/js-utils-logger'
 const LOGGER = new Logger('servlet-base')
+
+export interface AuthRequest<A, B, C> extends Request<A, B, C> {
+  __context: {
+    userId: string
+  }
+}
 
 export const handleError = (error, res, onError?) => {
   onError ? onError(error) : res.status(HttpUtils.HttpStatus.ERROR).send(error)
@@ -25,7 +33,8 @@ export const defaultGetAll = async (schema, req, res, next?, onError?) => {
 
 export const defaultPost = async (schema, req, res, next, onError) => {
   try {
-    const data = new schema.model(removeReserved(req.body))
+    const dataFormatted = removeReserved(req.body)
+    const data = new schema.model(dataFormatted)
     await data.save()
     res.status(HttpUtils.HttpStatus.CREATED).json(data)
   } catch (error) {

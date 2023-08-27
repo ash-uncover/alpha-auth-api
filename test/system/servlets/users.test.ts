@@ -12,14 +12,15 @@ import {
   resetDatabase,
   ACCOUNT_1,
   AUTH_TOKEN_1,
-  USER_1
+  USER_1,
+  MONGO_CONNECTION
 } from '../test.data'
 
 describe('/users', () => {
 
   beforeAll(async () => {
     try {
-      await mongoose.connect(CONFIG.ALPHA_AUTH_DATABASE_CONN, {
+      await mongoose.connect(MONGO_CONNECTION, {
         bufferCommands: false
       })
     } catch (error) {
@@ -30,12 +31,12 @@ describe('/users', () => {
   beforeEach(async () => {
     await resetDatabase()
     await SCHEMAS.ACCOUNTS.model.create(ACCOUNT_1)
-    await SCHEMAS.USERS.model.create(USER_1)
+    return await SCHEMAS.USERS.model.create(USER_1)
   })
 
   afterAll(async () => {
     try {
-      await mongoose.disconnect()
+      return await mongoose.disconnect()
     } catch (error) {
       console.error('Failed to disconnect from mongo')
     }
@@ -59,9 +60,32 @@ describe('/users', () => {
       test('when payload format is invalid', () => {
         return request(app)
           .post(`/rest/users`)
-          .set({ Authorization: AUTH_TOKEN_1 })
+          .set({
+            Authorization: AUTH_TOKEN_1 ,
+            ['Content-type']: 'application/json'
+          })
           .then(response => {
             expect(response.statusCode).toBe(HttpUtils.HttpStatus.BAD_REQUEST)
+          })
+          .catch((error) => {
+            expect(error).toBe(null)
+          })
+      })
+
+      test.only('when posting a valid user', () => {
+        return request(app)
+          .post(`/rest/users`)
+          .set({
+            Authorization: AUTH_TOKEN_1 ,
+            ['Content-type']: 'application/json'
+          })
+          .send({
+            id: 'usertest',
+            name: 'name',
+            description: 'description'
+          })
+          .then(response => {
+            expect(response.statusCode).toBe(HttpUtils.HttpStatus.CREATED)
           })
           .catch((error) => {
             expect(error).toBe(null)
@@ -154,6 +178,18 @@ describe('/users', () => {
             .set({ Authorization: AUTH_TOKEN_1 })
             .then(response => {
               expect(response.statusCode).toBe(HttpUtils.HttpStatus.NOT_FOUND)
+            })
+            .catch((error) => {
+              expect(error).toBe(null)
+            })
+        })
+
+        test('When deleting current user', () => {
+          return request(app)
+            .delete(`/rest/users/${USER_1.id}`)
+            .set({ Authorization: AUTH_TOKEN_1 })
+            .then(response => {
+              expect(response.statusCode).toBe(HttpUtils.HttpStatus.REMOVED)
             })
             .catch((error) => {
               expect(error).toBe(null)

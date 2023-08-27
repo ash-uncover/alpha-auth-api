@@ -30,7 +30,7 @@ export const removePrivate = (data) => {
   return data
 }
 
-export const preSave = function (next) {
+export const preValidate = function (next) {
   let now = new Date()
   this.id || (this.id = uuidv4())
   this._creationDate || (this._creationDate = now)
@@ -72,7 +72,7 @@ export const AccountSchema = new mongoose.Schema({
   actionToken: { type: String },
   actionDate: { type: Date },
 })
-AccountSchema.pre('save', preSave)
+AccountSchema.pre('validate', preValidate)
 
 export const AccountName = 'account'
 export const AccountCollectionName = `${AccountName}s`
@@ -93,7 +93,7 @@ export const UserSchema = new mongoose.Schema({
   avatar: { type: String },
   description: { type: String },
 })
-UserSchema.pre('save', preSave)
+UserSchema.pre('validate', preValidate)
 
 export const UserName = 'user'
 export const UserCollectionName = `${UserName}s`

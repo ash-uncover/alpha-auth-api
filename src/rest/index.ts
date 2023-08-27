@@ -3,20 +3,12 @@ import express from 'express'
 import Logger from '@uncover/js-utils-logger'
 
 import {
-  AccountModel
-} from '../database/schemas'
-
-import {
   HttpUtils,
   EncodeUtils,
 } from '@uncover/js-utils'
 
-import {
-  getAuth,
-  deleteAuth,
-  postAuthRegister,
-  putAuthRegister,
-} from './servlets/auth'
+import { authRouter } from './servlets/auth'
+import { accountRouter } from './servlets/accounts'
 
 import addUsersRoutes from './servlets/users'
 
@@ -46,15 +38,10 @@ app.use(useDebugRequest)
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
-app.post('/auth/register', postAuthRegister)
-app.put('/auth/register', putAuthRegister)
-
 app.use(useAuth)
 
-// Auth end point
-app.get('/auth', getAuth)
-app.delete('/auth', deleteAuth)
-
+app.use('/auth', authRouter)
+app.use('/accounts', accountRouter)
 addUsersRoutes(app)
 
 export default app
