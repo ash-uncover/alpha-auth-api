@@ -1,43 +1,61 @@
-import SCHEMAS, {
-  removeReserved
-} from '../../database/schemas'
+import {
+  Router,
+  Response
+} from 'express'
 
 import {
   defaultPost,
   defaultGet,
   defaultPut,
   defaultDelete,
+  AuthRequest,
 } from '../servlet-base'
+
+import SCHEMAS, {
+  IAccount,
+  removeReserved
+} from '../../database/schemas'
+
 
 import { v4 as uuidv4 } from 'uuid'
 import * as nodemailer from 'nodemailer'
 
-import AccountStatus from '../../lib/AccountStatus'
+import {
+  AccountStatus,
+  AccountStatuses
+} from '../../lib/AccountStatus'
 
 import Logger from '@uncover/js-utils-logger'
-import { Router } from 'express'
+import { HttpUtils } from '@uncover/js-utils'
+
 import ERRORS, { sendError } from '../servlet-error'
 import { nextToken } from '../../lib/TokenGenerator'
-import { HttpUtils } from '@uncover/js-utils'
 import CONFIG from '../../configuration'
+import { AccountTokenRecover, AccountTokenRegister, Credentials, CredentialsUsername } from 'alpha-auth-common/build/services/auth/auth.model'
 
 const LOGGER = new Logger('REST-ACCOUNTS')
 
-export const accountRouter = Router()
+// Create router
+
+export const accountsRouterV1 = Router()
 
 // POST /register
 
-export const postAccountRegister = async (req, res, next) => {
+export const postAccountRegister = async (
+  req: AuthRequest<{}, {}, Credentials>,
+  res: Response,
+  next: () => void
+) => {
   try {
     const {
       username,
       password
     } = req.body
     // check if account can be created
-    const prevAccount = await SCHEMAS.ACCOUNTS.model.findOne({ username })
+    const prevAccount: IAccount = await SCHEMAS.ACCOUNTS.model.findOne({ username })
     let accountData = prevAccount
     if (prevAccount) {
-      if (prevAccount.status !== AccountStatus.REGISTERING) {
+      if (prevAccount.status !== AccountStatuses.REGISTERING) {
         sendError(LOGGER, res, ERRORS.AUTH_REGISTER_ACCOUNT_EXISTS)
         return
       }
@@ -54,8 +72,9 @@ export const postAccountRegister = async (req, res, next) => {
       accountData.id = uuidv4()
       accountData.type = 'ALPHA'
       accountData.userId = user.id
-      accountData.status = AccountStatus.REGISTERING
+      accountData.status = AccountStatuses.REGISTERING
     }
+    accountData.password = password
     accountData.actionToken = nextToken()
     accountData.actionDate = new Date()
     const account = new SCHEMAS.ACCOUNTS.model(accountData)
@@ -88,7 +107,7 @@ export const postAccountRegister = async (req, res, next) => {
     sendError(LOGGER, res, ERRORS.INTERNAL)
   }
 }
-accountRouter.post('/register', postAccountRegister)
+accountsRouterV1.post('/register', postAccountRegister)
 
 /*
 export const postAccount = async (req, res, next) => {
@@ -114,7 +133,11 @@ export const postAccount = async (req, res, next) => {
 
 // PUT /register
 
-export const putAccountRegister = async (req, res, next) => {
+export const putAccountRegister = async (
+  req: AuthRequest<{}, {}, AccountTokenRegister>,
+  res: Response,
+  next: () => void
+) => {
   try {
     const {
       username,
@@ -124,14 +147,14 @@ export const putAccountRegister = async (req, res, next) => {
     const account = await SCHEMAS.ACCOUNTS.model.findOne({ username })
     if (!account) {
       sendError(LOGGER, res, ERRORS.AUTH_REGISTER_CONFIRM_ACCOUNT_INVALID)
-    } else if (account.status !== AccountStatus.REGISTERING) {
+    } else if (account.status !== AccountStatuses.REGISTERING) {
       sendError(LOGGER, res, ERRORS.AUTH_REGISTER_CONFIRM_ACCOUNT_EXISTS)
     } else if (account.actionToken !== token) {
       sendError(LOGGER, res, ERRORS.AUTH_REGISTER_CONFIRM_TOKEN_INVALID)
     } else if (!account.actionDate || ((new Date().getTime() - account.actionDate.getTime()) > 3600000)) {
       sendError(LOGGER, res, ERRORS.AUTH_REGISTER_CONFIRM_TOKEN_EXPIRED)
     } else {
-      account.status = AccountStatus.ACTIVE
+      account.status = AccountStatuses.ACTIVE
       account.actionToken = null
       account.actionDate = null
       await account.save()
@@ -141,28 +164,70 @@ export const putAccountRegister = async (req, res, next) => {
     sendError(LOGGER, res, ERRORS.INTERNAL)
   }
 }
-accountRouter.put('/register', putAccountRegister)
+accountsRouterV1.put('/register', putAccountRegister)
+
 
 // POST /recover
 
-export const postAccountRecover = async (req, res, next) => {
+export const postAccountRecover = async (
+  req: AuthRequest<{}, {}, CredentialsUsername>,
+  res: Response,
+  next: () => void
+) => {
 }
-accountRouter.post('/recover', postAccountRecover)
+accountsRouterV1.post('/recover', postAccountRecover)
+
 
 // PUT /recover
 
-export const putAccountRecover = async (req, res, next) => {
+export const putAccountRecover = async (
+  req: AuthRequest<{}, {}, AccountTokenRecover>,
+  res: Response,
+  next: () => void
+) => {
 }
-accountRouter.put('/recover', putAccountRecover)
+accountsRouterV1.put('/recover', putAccountRecover)
+
 
 // POST /changemail
 
-export const postAccountChangeMail = async (req, res, next) => {
+export const postAccountChangeMail = async (
+  req: AuthRequest<{}, {}, {}>,
+  res: Response,
+  next: () => void
+) => {
 }
-accountRouter.post('/changemail', postAccountChangeMail)
+accountsRouterV1.post('/changemail', postAccountChangeMail)
 
-// PUT /recover
 
-export const putAccountChangeMail = async (req, res, next) => {
+// PUT /changemail
+
+export const putAccountChangeMail = async (
+  req: AuthRequest<{}, {}, {}>,
+  res: Response,
+  next: () => void
+) => {
 }
-accountRouter.put('/changemail', putAccountChangeMail)
+accountsRouterV1.put('/changemail', putAccountChangeMail)
+
+
+// GET /{accountId}
+
+export const getAccount = async (
+  req: AuthRequest<{}, {}, {}>,
+  res: Response,
+  next: () => void
+) => {
+}
+accountsRouterV1.put('/{accountId}', getAccount)
+
+
+// PATCH /{accountId}
+
+export const patchAccount = async (
+  req: AuthRequest<{}, {}, {}>,
+  res: Response,
+  next: () => void
+) => {
+}
+accountsRouterV1.put('/{accountId}', patchAccount)

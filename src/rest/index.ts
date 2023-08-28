@@ -1,22 +1,26 @@
-import express from 'express'
+import express, {
+  Request,
+  Response
+} from 'express'
 
 import Logger from '@uncover/js-utils-logger'
 
 import {
   HttpUtils,
-  EncodeUtils,
 } from '@uncover/js-utils'
 
-import { authRouter } from './servlets/auth'
-import { accountRouter } from './servlets/accounts'
+import { healthRouter } from './servlets/health'
 
-import addUsersRoutes from './servlets/users'
+import { authRouterV1 } from './servlets/auth.v1'
+import { accountsRouterV1 } from './servlets/accounts.v1'
+import { usersRouterV1 } from './servlets/users.v1'
 
 import {
   useAuth,
   useDebugRequest,
   useHeaders
 } from './middleware'
+import CONFIG from '../configuration'
 
 const LOGGER = new Logger('REST')
 
@@ -38,10 +42,12 @@ app.use(useDebugRequest)
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
+app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/health`, healthRouter)
+
 app.use(useAuth)
 
-app.use('/auth', authRouter)
-app.use('/accounts', accountRouter)
-addUsersRoutes(app)
+app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/v1/auth`, authRouterV1)
+app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/v1//accounts`, accountsRouterV1)
+app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/v1//users`, usersRouterV1)
 
 export default app

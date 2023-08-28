@@ -17,6 +17,8 @@ import {
 
 describe('/auth', () => {
 
+  const URL_AUTH_V1 = `${CONFIG.ALPHA_AUTH_REST_ROOT}/v1/auth`
+
   beforeAll(async () => {
     try {
       await mongoose.connect(MONGO_CONNECTION, {
@@ -44,7 +46,7 @@ describe('/auth', () => {
 
     test('Returns 401 when no token is provided', () => {
       return request(app)
-        .get(`/auth`)
+        .get(`${URL_AUTH_V1}`)
         .then(response => {
           expect(response.statusCode).toBe(HttpUtils.HttpStatus.UNAUTHORIZED)
         })
@@ -55,7 +57,7 @@ describe('/auth', () => {
 
     test('Returns 401 when invalid token is provided', () => {
       return request(app)
-        .get(`/auth`)
+        .get(`${URL_AUTH_V1}`)
         .set({
           Authorization: 'dummy'
         })
@@ -69,7 +71,7 @@ describe('/auth', () => {
 
     test('Returns 200 when valid token is provided', () => {
       return request(app)
-        .get(`/auth`)
+        .get(`${URL_AUTH_V1}`)
         .set({
           Authorization: AUTH_TOKEN_1
         })
@@ -88,7 +90,7 @@ describe('/auth', () => {
   describe('POST', () => {
     test('Returns 401 when no token is provided', () => {
       return request(app)
-        .post(`/auth`)
+        .post(`${URL_AUTH_V1}`)
         .then(response => {
           expect(response.statusCode).toBe(HttpUtils.HttpStatus.UNAUTHORIZED)
         })
@@ -99,7 +101,7 @@ describe('/auth', () => {
 
     test('Returns 401 when invalid token is provided', () => {
       return request(app)
-        .post(`/auth`)
+        .post(`${URL_AUTH_V1}`)
         .set({
           Authorization: 'dummy'
         })
@@ -113,7 +115,7 @@ describe('/auth', () => {
 
     test('Returns 200 when valid token is provided', () => {
       return request(app)
-        .post(`/auth`)
+        .post(`${URL_AUTH_V1}`)
         .set({
           Authorization: AUTH_TOKEN_1
         })
@@ -132,7 +134,7 @@ describe('/auth', () => {
   describe('DELETE', () => {
     test('Returns 401 when no token is provided', () => {
       return request(app)
-        .delete(`/auth`)
+        .delete(`${URL_AUTH_V1}`)
         .then(response => {
           expect(response.statusCode).toBe(HttpUtils.HttpStatus.UNAUTHORIZED)
         })
@@ -143,7 +145,7 @@ describe('/auth', () => {
 
     test('Returns 401 when invalid token is provided', () => {
       return request(app)
-        .delete(`/auth`)
+        .delete(`${URL_AUTH_V1}`)
         .set({
           Authorization: 'dummy'
         })
@@ -157,7 +159,7 @@ describe('/auth', () => {
 
     test('Returns 200 when valid token is provided', () => {
       return request(app)
-        .delete(`/auth`)
+        .delete(`${URL_AUTH_V1}`)
         .set({
           Authorization: AUTH_TOKEN_1
         })

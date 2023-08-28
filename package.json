@@ -2,16 +2,16 @@
   "name": "alpha-auth-api",
   "version": "1.0.0",
   "description": "",
-  "author": "aSh <ash.uncover@gmail.com>",
+  "author": "aSH <ash.uncover@gmail.com>",
   "license": "ISC",
   "main": "index.ts",
   "scripts": {
     "build": "tsc",
-    "install:local": "npm i && npm link alpha-auth-common",
+    "install-local": "npm i && npm link alpha-auth-common",
     "start": "node --inspect=5858 -r ts-node/register ./src/index.ts",
     "start:dev": "nodemon --inspect './src/index'",
     "test": "jest",
-    "test:coverage": "jest --runInBand --coverage"
+    "test-coverage": "jest --runInBand --coverage"
   },
   "dependencies": {
     "@uncover/js-utils": "0.0.13",
@@ -26,7 +26,7 @@
   "devDependencies": {
     "@types/express": "4.17.17",
     "@types/jest": "29.5.4",
-    "@types/node": "20.5.6",
+    "@types/node": "20.5.7",
     "eslint": "8.48.0",
     "eslint-plugin-import": "2.28.1",
     "jest": "29.6.4",

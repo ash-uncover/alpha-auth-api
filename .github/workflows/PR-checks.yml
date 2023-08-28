@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - main
-      - master
 
 jobs:
   lint-build-test:
@@ -17,7 +16,7 @@ jobs:
         uses: actions/setup-node@master
 
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         env:
           cache-name: cache-node-modules
         with:

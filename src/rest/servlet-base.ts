@@ -1,12 +1,13 @@
-import { Request } from 'express'
+import {
+  Request,
+} from 'express'
 
-import SCHEMAS, {
+import {
   removeReserved,
-  removePrivate
 } from '../database/schemas'
 
 import {
-  HttpUtils
+  HttpUtils,
 } from '@uncover/js-utils'
 
 import Logger from '@uncover/js-utils-logger'

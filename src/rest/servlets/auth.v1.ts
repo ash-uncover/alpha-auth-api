@@ -8,21 +8,17 @@ import {
 } from '@uncover/js-utils'
 
 import {
-  Credentials
-} from 'alpha-auth-common/build/services/auth/auth.model'
-
-import {
   AuthRequest
 } from '../servlet-base'
 
 // Router
 
-export const authRouter = Router()
+export const authRouterV1 = Router()
 
-// GET /
+// GET '/'
 
 export const getAuth = async (
-  req: AuthRequest<{}, {}, Credentials>,
+  req: AuthRequest<{}, {}, {}>,
   res: Response,
   next: () => void
 ) => {
@@ -30,12 +26,12 @@ export const getAuth = async (
     .status(HttpUtils.HttpStatus.OK)
     .send({ userId: req.__context.userId })
 }
-authRouter.get('/', getAuth)
+authRouterV1.get('/', getAuth)
 
-// POST /
+// POST '/'
 
 export const postAuth = async (
-  req: AuthRequest<{}, {}, Credentials>,
+  req: AuthRequest<{}, {}, {}>,
   res: Response,
   next: () => void
 ) => {
@@ -44,12 +40,12 @@ export const postAuth = async (
     .status(HttpUtils.HttpStatus.OK)
     .send({ userId: req.__context.userId })
 }
-authRouter.post('/', postAuth)
+authRouterV1.post('/', postAuth)
 
-// DELETE /
+// DELETE '/'
 
 export const deleteAuth = async (
-  req: AuthRequest<{}, {}, Credentials>,
+  req: AuthRequest<{}, {}, {}>,
   res: Response,
   next: () => void
 ) => {
@@ -58,4 +54,4 @@ export const deleteAuth = async (
     .status(HttpUtils.HttpStatus.OK)
     .send()
 }
-authRouter.delete('/', deleteAuth)
+authRouterV1.delete('/', deleteAuth)
