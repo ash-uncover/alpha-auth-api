@@ -48,5 +48,8 @@
     ],
     "exec": "npm start",
     "ext": "ts"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
