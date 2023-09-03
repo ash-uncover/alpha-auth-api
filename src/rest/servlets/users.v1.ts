@@ -1,6 +1,6 @@
 import {
+  Response,
   Router,
-  Response
 } from 'express'
 
 import {
@@ -28,23 +28,24 @@ const multer = require('multer')
 
 export const usersRouterV1 = Router()
 
-// GET '/{userId}'
+// GET '/:userId'
 
 export const getUser = function(
   req: AuthRequest<{}, {}, {}>,
   res: Response,
   next: () => void
 ) {
+  console.log('in debug user')
   try {
     defaultGet(SCHEMAS.USERS, req, res, next, null)
   } catch (error) {
     res.status(HttpUtils.HttpStatus.ERROR).send(error)
   }
 }
-usersRouterV1.get('/{userId}', getUser)
+usersRouterV1.get('/:userId', getUser)
 
 
-// PATCH '/{userId}
+// PATCH '/:userId
 
 export const patchUser = function(
   req: AuthRequest<{}, {}, User>,
@@ -72,10 +73,10 @@ export const patchUser = function(
     res.status(HttpUtils.HttpStatus.ERROR).send(error)
   }
 }
-usersRouterV1.patch('/{userId}', patchUser)
+usersRouterV1.patch('/:userId', patchUser)
 
 
-// POST /{userId}/avatar
+// POST /:userId/avatar
 
 export const postUserAvatar = function(
   req: AuthRequest<{}, {}, {}>,
@@ -91,4 +92,4 @@ export const postUserAvatar = function(
     res.status(HttpUtils.HttpStatus.OK).json({file: req.file})
   })
 }
-usersRouterV1.put('/{userId}/avatar', postUserAvatar)
+usersRouterV1.put('/:userId/avatar', postUserAvatar)

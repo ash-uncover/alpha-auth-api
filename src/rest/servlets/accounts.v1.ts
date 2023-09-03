@@ -211,7 +211,7 @@ export const putAccountChangeMail = async (
 accountsRouterV1.put('/changemail', putAccountChangeMail)
 
 
-// GET /{accountId}
+// GET /:accountId
 
 export const getAccount = async (
   req: AuthRequest<{}, {}, {}>,
@@ -219,10 +219,10 @@ export const getAccount = async (
   next: () => void
 ) => {
 }
-accountsRouterV1.put('/{accountId}', getAccount)
+accountsRouterV1.put('/:accountId', getAccount)
 
 
-// PATCH /{accountId}
+// PATCH /:accountId
 
 export const patchAccount = async (
   req: AuthRequest<{}, {}, {}>,
@@ -230,4 +230,4 @@ export const patchAccount = async (
   next: () => void
 ) => {
 }
-accountsRouterV1.put('/{accountId}', patchAccount)
+accountsRouterV1.put('/:accountId', patchAccount)

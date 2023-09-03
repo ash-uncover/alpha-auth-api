@@ -9,7 +9,7 @@ const CONFIG = {
   ALPHA_AUTH_REST_PROTOCOL: 'http',
   ALPHA_AUTH_REST_HOST: 'localhost',
   ALPHA_AUTH_REST_PORT: '8090',
-  ALPHA_AUTH_REST_ROOT: 'rest/apî',
+  ALPHA_AUTH_REST_ROOT: 'rest/api',
 
   ALPHA_AUTH_SMTP_HOST: '',
   ALPHA_AUTH_SMTP_PORT: '',
