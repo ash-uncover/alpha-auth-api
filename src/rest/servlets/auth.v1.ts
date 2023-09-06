@@ -63,9 +63,16 @@ export const getAuth = async (
   res: Response,
   next: () => void
 ) => {
+  const user = await UserModel.findOne({ id: req.__context.userId }).select('-_id -__v').exec()
+  if (!user) {
+    return res
+      .status(HttpUtils.HttpStatus.ERROR)
+      .send()
+  }
+
   res
     .status(HttpUtils.HttpStatus.OK)
-    .send({ userId: req.__context.userId })
+    .json(user)
 }
 authRouterV1.get('/', getAuth)
 
