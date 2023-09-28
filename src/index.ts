@@ -1,4 +1,4 @@
-import CONFIG from './configuration'
+import { CONFIG } from './config'
 
 import * as mongoose from 'mongoose'
 import rest from './rest'

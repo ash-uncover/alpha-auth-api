@@ -20,7 +20,7 @@ import {
   useDebugRequest,
   useHeaders
 } from './middleware'
-import CONFIG from '../configuration'
+import { CONFIG } from '../config'
 import { useNotFound } from './middleware/useNotFound'
 
 const LOGGER = new Logger('REST')
@@ -49,8 +49,6 @@ app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/health`, healthRouter)
 app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/v1/auth`, authRouterV1)
 
 app.use(useAuth)
-
-console.log(`${CONFIG.ALPHA_AUTH_REST_ROOT}/v1/users`)
 
 app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/v1/accounts`, accountsRouterV1)
 app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/v1/users`, usersRouterV1)

@@ -45,8 +45,6 @@ export const defaultPost = async (schema, req, res, next, onError) => {
 
 export const defaultGet = async (schema, req, res, next, onError) => {
   const id = req.params[`${schema.name}Id`]
-  console.log('here')
-  console.log(id)
   try {
     const data = await schema.model.findOne({ id }).select('-_id -__v').exec()
     data ? res.json(data) : res.sendStatus(HttpUtils.HttpStatus.NOT_FOUND)

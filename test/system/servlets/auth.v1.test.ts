@@ -6,13 +6,14 @@ import { HttpUtils } from '@uncover/js-utils'
 
 import app from '../../../src/rest'
 import SCHEMAS from '../../../src/database/schemas'
-import CONFIG from '../../../src/configuration'
+import { CONFIG } from '../../../src/config'
 
 import {
   resetDatabase,
   ACCOUNT_1,
   AUTH_TOKEN_1,
-  MONGO_CONNECTION
+  MONGO_CONNECTION,
+  USER_1
 } from '../test.data'
 
 describe('/auth', () => {
@@ -31,7 +32,8 @@ describe('/auth', () => {
 
   beforeEach(async () => {
     await resetDatabase()
-    return await SCHEMAS.ACCOUNTS.model.create(ACCOUNT_1)
+    await SCHEMAS.ACCOUNTS.model.create(ACCOUNT_1)
+    return await SCHEMAS.USERS.model.create(USER_1)
   })
 
   afterAll(async () => {
@@ -64,7 +66,7 @@ describe('/auth', () => {
         .then(response => {
           expect(response.statusCode).toBe(HttpUtils.HttpStatus.UNAUTHORIZED)
         })
-        .catch((error) => {
+        .catch((error: Error) => {
           expect(error).toBe(null)
         })
     })
@@ -77,12 +79,11 @@ describe('/auth', () => {
         })
         .then(response => {
           expect(response.statusCode).toBe(HttpUtils.HttpStatus.OK)
-          expect(response.body).toEqual({
-            userId: ACCOUNT_1.userId
-          })
+          expect(response.body.id).toEqual(USER_1.id);
+          expect(response.body.name).toEqual(USER_1.name);
         })
-        .catch((error) => {
-          expect(error).toBe(null)
+        .catch((error: Error) => {
+            expect(error).toBe(null)
         })
     })
   })
@@ -99,11 +100,12 @@ describe('/auth', () => {
         })
     })
 
-    test('Returns 401 when invalid token is provided', () => {
+    test('Returns 401 when invalid credentials are provided', () => {
       return request(app)
         .post(`${URL_AUTH_V1}`)
-        .set({
-          Authorization: 'dummy'
+        .send({
+          username: 'dummy',
+          password: 'dummy'
         })
         .then(response => {
           expect(response.statusCode).toBe(HttpUtils.HttpStatus.UNAUTHORIZED)
@@ -113,17 +115,21 @@ describe('/auth', () => {
         })
     })
 
-    test('Returns 200 when valid token is provided', () => {
+    test('Returns 200 when valid credentials are provided', () => {
       return request(app)
         .post(`${URL_AUTH_V1}`)
-        .set({
-          Authorization: AUTH_TOKEN_1
+        .send({
+          username: ACCOUNT_1.username,
+          password: 'a'
         })
         .then(response => {
           expect(response.statusCode).toBe(HttpUtils.HttpStatus.OK)
-          expect(response.body).toEqual({
-            userId: ACCOUNT_1.userId
-          })
+
+          expect(response.body.token).toEqual(AUTH_TOKEN_1)
+
+          expect(response.body.user.id).toEqual(USER_1.id)
+          expect(response.body.user.description).toEqual(USER_1.description)
+          expect(response.body.user.name).toEqual(USER_1.name)
         })
         .catch((error) => {
           expect(error).toBe(null)
