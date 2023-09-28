@@ -7,6 +7,7 @@
   "main": "index.ts",
   "scripts": {
     "build": "tsc",
+    "deploy": "npm run build && npm run start",
     "install-local": "npm i && npm link alpha-auth-common",
     "postinstall": "npm update alpha-auth-common",
     "start": "node --inspect=5858 -r ts-node/register ./src/index.ts",
