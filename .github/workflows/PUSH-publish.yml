@@ -38,7 +38,7 @@ jobs:
       - name: publish
         uses: wei/git-sync@master
         with:
-          source_repo: https://github.com/ash-uncover/alpha-auth.git
-          source_branch: master
+          source_repo: https://github.com/ash-uncover/alpha-auth-api.git
+          source_branch: main
           destination_repo: ${{ secrets.GLITCH_GIT_URL }}
           destination_branch: master
