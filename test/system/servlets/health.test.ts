@@ -4,7 +4,7 @@ import request from 'supertest'
 import { HttpUtils } from '@uncover/js-utils'
 
 import app from '../../../src/rest'
-import CONFIG from '../../../src/configuration'
+import { CONFIG } from '../../../src/config'
 
 describe('/health', () => {
 

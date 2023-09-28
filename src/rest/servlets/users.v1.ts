@@ -35,7 +35,6 @@ export const getUser = function(
   res: Response,
   next: () => void
 ) {
-  console.log('in debug user')
   try {
     defaultGet(SCHEMAS.USERS, req, res, next, null)
   } catch (error) {
@@ -85,6 +84,10 @@ export const postUserAvatar = function(
 ) {
   const upload = multer({ dest:'uploads/' }).single('avatar')
   upload(req, res, (error) => {
+    // @ts-ignore
+    if(!req.file) {
+      res.status(HttpUtils.HttpStatus.BAD_REQUEST).send('No file provided')
+    }
     if(error) {
       res.status(HttpUtils.HttpStatus.ERROR).send(error)
     }
@@ -92,4 +95,4 @@ export const postUserAvatar = function(
     res.status(HttpUtils.HttpStatus.OK).json({file: req.file})
   })
 }
-usersRouterV1.put('/:userId/avatar', postUserAvatar)
+usersRouterV1.post('/:userId/avatar', postUserAvatar)

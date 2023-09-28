@@ -5,3 +5,4 @@ __coverage__
 .vscode
 config.json
 functions
+uploads

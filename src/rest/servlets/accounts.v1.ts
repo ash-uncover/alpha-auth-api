@@ -99,7 +99,6 @@ export const postAccountRegister = async (
         LOGGER.error(err)
         sendError(LOGGER, res, ERRORS.AUTH_REGISTER_MAIL_ERROR)
       } else {
-        console.log(info);
         res.status(HttpUtils.HttpStatus.CREATED).send()
       }
     })
@@ -219,7 +218,7 @@ export const getAccount = async (
   next: () => void
 ) => {
 }
-accountsRouterV1.put('/:accountId', getAccount)
+accountsRouterV1.get('/:accountId', getAccount)
 
 
 // PATCH /:accountId
@@ -230,4 +229,4 @@ export const patchAccount = async (
   next: () => void
 ) => {
 }
-accountsRouterV1.put('/:accountId', patchAccount)
+accountsRouterV1.patch('/:accountId', patchAccount)

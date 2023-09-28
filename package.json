@@ -11,8 +11,8 @@
     "postinstall": "npm update alpha-auth-common",
     "start": "node --inspect=5858 -r ts-node/register ./src/index.ts",
     "start:dev": "nodemon --inspect './src/index'",
-    "test": "jest",
-    "test-coverage": "jest --runInBand --coverage"
+    "test": "jest -i",
+    "test-coverage": "jest --i --coverage"
   },
   "dependencies": {
     "@uncover/js-utils": "0.0.15",

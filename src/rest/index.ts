@@ -50,8 +50,6 @@ app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/v1/auth`, authRouterV1)
 
 app.use(useAuth)
 
-console.log(`${CONFIG.ALPHA_AUTH_REST_ROOT}/v1/users`)
-
 app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/v1/accounts`, accountsRouterV1)
 app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/v1/users`, usersRouterV1)
 
