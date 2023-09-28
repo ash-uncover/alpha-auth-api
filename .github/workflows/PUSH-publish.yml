@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-node@master
 
       - name: Cache node modules
-        uses: actions/cache@v3
+        uses: actions/cache@master
         env:
           cache-name: cache-node-modules
         with:
@@ -37,3 +37,11 @@ jobs:
 
       - name: build
         run: npm run build
+
+      - name: publish
+        uses: wei/git-sync@master
+        with:
+          source_repo: https://github.com/ash-uncover/alpha-auth.git
+          source_branch: master
+          destination_repo: ${{ secrets.GLITCH_GIT_URL }}
+          destination_branch: master

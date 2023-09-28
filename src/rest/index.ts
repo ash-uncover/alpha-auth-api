@@ -20,7 +20,7 @@ import {
   useDebugRequest,
   useHeaders
 } from './middleware'
-import CONFIG from '../configuration'
+import { CONFIG } from '../config'
 import { useNotFound } from './middleware/useNotFound'
 
 const LOGGER = new Logger('REST')

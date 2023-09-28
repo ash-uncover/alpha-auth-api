@@ -4,3 +4,4 @@ __coverage__
 .deployment
 .vscode
 config.json
+functions

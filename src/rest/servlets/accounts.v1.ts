@@ -30,7 +30,7 @@ import { HttpUtils } from '@uncover/js-utils'
 
 import ERRORS, { sendError } from '../servlet-error'
 import { nextToken } from '../../lib/TokenGenerator'
-import CONFIG from '../../configuration'
+import { CONFIG } from '../../config'
 import { AccountTokenRecover, AccountTokenRegister, Credentials, CredentialsUsername } from 'alpha-auth-common/build/services/auth/auth.model'
 
 const LOGGER = new Logger('REST-ACCOUNTS')
