@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from 'uuid'
 
 // Common stuf
 
-
 export const INTERNAL_FIELDS = [
   '_id',
   '_creationDate',

@@ -3,7 +3,7 @@ import request from 'supertest'
 
 import { HttpUtils } from '@uncover/js-utils'
 
-import app from '../../../src/rest'
+import { app } from '../../../src/rest'
 import SCHEMAS from '../../../src/database/schemas'
 import { CONFIG } from '../../../src/config'
 
