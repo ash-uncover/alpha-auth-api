@@ -10,6 +10,7 @@ import Logger, {
 LogConfig.info()
 const LOGGER = new Logger('SERVER')
 
+LOGGER.error('Connecting to DB')
 mongoose.connect(CONFIG.ALPHA_AUTH_DATABASE_CONN)
   .then(() => {
     LOGGER.error('Database is running')
@@ -25,3 +26,5 @@ mongoose.connect(CONFIG.ALPHA_AUTH_DATABASE_CONN)
     LOGGER.error('Failed to connect Mongo')
     LOGGER.error(error)
   })
+
+export {}
