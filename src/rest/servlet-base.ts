@@ -10,7 +10,7 @@ import {
   HttpUtils,
 } from '@uncover/js-utils'
 
-import Logger from '@uncover/js-utils-logger'
+import { Logger } from '@uncover/js-utils-logger'
 const LOGGER = new Logger('servlet-base')
 
 export interface AuthRequest<A, B, C> extends Request<A, B, C> {

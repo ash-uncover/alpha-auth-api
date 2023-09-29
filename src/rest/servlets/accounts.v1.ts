@@ -25,7 +25,7 @@ import {
   AccountStatuses
 } from '../../lib/AccountStatus'
 
-import Logger from '@uncover/js-utils-logger'
+import { Logger } from '@uncover/js-utils-logger'
 import { HttpUtils } from '@uncover/js-utils'
 
 import ERRORS, { sendError } from '../servlet-error'
