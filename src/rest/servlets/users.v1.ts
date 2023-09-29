@@ -17,7 +17,7 @@ import ERRORS, {
   sendError
 } from '../servlet-error'
 
-import Logger from '@uncover/js-utils-logger'
+import { Logger } from '@uncover/js-utils-logger'
 import { HttpUtils } from '@uncover/js-utils'
 import { User } from 'alpha-auth-common/build/services/auth/auth.model'
 
@@ -30,7 +30,7 @@ export const usersRouterV1 = Router()
 
 // GET '/:userId'
 
-export const getUser = function(
+export const getUser = function (
   req: AuthRequest<{}, {}, {}>,
   res: Response,
   next: () => void
@@ -46,7 +46,7 @@ usersRouterV1.get('/:userId', getUser)
 
 // PATCH '/:userId
 
-export const patchUser = function(
+export const patchUser = function (
   req: AuthRequest<{}, {}, User>,
   res: Response,
   next: () => void
@@ -77,22 +77,22 @@ usersRouterV1.patch('/:userId', patchUser)
 
 // POST /:userId/avatar
 
-export const postUserAvatar = function(
+export const postUserAvatar = function (
   req: AuthRequest<{}, {}, {}>,
   res: Response,
   next: () => void
 ) {
-  const upload = multer({ dest:'uploads/' }).single('avatar')
+  const upload = multer({ dest: 'uploads/' }).single('avatar')
   upload(req, res, (error) => {
     // @ts-ignore
-    if(!req.file) {
+    if (!req.file) {
       res.status(HttpUtils.HttpStatus.BAD_REQUEST).send('No file provided')
     }
-    if(error) {
+    if (error) {
       res.status(HttpUtils.HttpStatus.ERROR).send(error)
     }
     // @ts-ignore
-    res.status(HttpUtils.HttpStatus.OK).json({file: req.file})
+    res.status(HttpUtils.HttpStatus.OK).json({ file: req.file })
   })
 }
 usersRouterV1.post('/:userId/avatar', postUserAvatar)

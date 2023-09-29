@@ -1,7 +1,9 @@
-import Logger from '@uncover/js-utils-logger'
+import  {
+  Logger,
+  LogLevels
+} from '@uncover/js-utils-logger'
 
 const LOGGER = new Logger('CONFIG')
-
 //
 export const CONFIG = {
   ALPHA_AUTH_DATABASE_CONN: 'mongodb://127.0.0.1:4242/auth',
@@ -20,13 +22,13 @@ export const CONFIG = {
 
 // Load config from local file
 try {
-  const CONFIG_LOCAL = require('./config.json')
+  const CONFIG_LOCAL = require('./configuration.json')
   Object.keys(CONFIG).forEach((key) => {
     CONFIG[key] = CONFIG_LOCAL[key] || CONFIG[key]
   })
 
 } catch (error) {
-  LOGGER.warn('Failed to load config.json')
+  LOGGER.warn('Failed to load configuration.json')
 }
 
 // Load config from env

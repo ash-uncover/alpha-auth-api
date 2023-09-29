@@ -3,7 +3,7 @@ import express, {
   Response
 } from 'express'
 
-import Logger from '@uncover/js-utils-logger'
+import { Logger } from '@uncover/js-utils-logger'
 
 import {
   HttpUtils,
@@ -30,7 +30,7 @@ export const optionsRoute = (req: any, res: any, next: any) => {
   res.sendStatus(HttpUtils.HttpStatus.OK)
 }
 
-const app = express()
+export const app = express()
 
 app.use(express.static('public'))
 
@@ -45,7 +45,6 @@ app.use(express.json())
 
 app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/health`, healthRouter)
 
-
 app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/v1/auth`, authRouterV1)
 
 app.use(useAuth)
@@ -54,5 +53,3 @@ app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/v1/accounts`, accountsRouterV1)
 app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/v1/users`, usersRouterV1)
 
 app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/*`, useNotFound)
-
-export default app

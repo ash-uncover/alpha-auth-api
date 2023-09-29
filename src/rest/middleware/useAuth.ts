@@ -1,5 +1,5 @@
 import { EncodeUtils, HttpUtils } from '@uncover/js-utils'
-import Logger from '@uncover/js-utils-logger'
+import { Logger } from '@uncover/js-utils-logger'
 import { AccountModel, UserModel } from '../../database/schemas'
 
 const LOGGER = new Logger('useAuth')

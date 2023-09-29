@@ -1,4 +1,4 @@
-import Logger from '@uncover/js-utils-logger'
+import { Logger } from '@uncover/js-utils-logger'
 
 const LOGGER = new Logger('useDebugRequest')
 
