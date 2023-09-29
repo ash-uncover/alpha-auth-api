@@ -6,14 +6,14 @@
   "license": "ISC",
   "main": "index.ts",
   "scripts": {
-    "build": "tsc",
-    "deploy": "npm run build && npm run start",
+    "build": "npm run tsc",
     "install-local": "npm i && npm link alpha-auth-common",
     "postinstall": "npm update alpha-auth-common",
     "start": "ts-node src/index.ts",
     "start:dev": "nodemon src/index.ts",
     "test": "jest -i",
-    "test-coverage": "jest --i --coverage"
+    "test-coverage": "jest --i --coverage",
+    "tsc": "tsc -p tsconfig.json"
   },
   "dependencies": {
     "@uncover/js-utils": "0.0.15",

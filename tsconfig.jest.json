@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "esModuleInterop": true,
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "outDir": "dist/",
+    "outDir": "dist",
     "sourceMap": true,
-    "target": "es6"
+    "target": "es6",
+    "typeRoots": [
+      "node_modules/@types"
+    ]
   },
   "include": [
     "src/**/*.ts",
