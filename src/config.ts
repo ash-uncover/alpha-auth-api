@@ -8,10 +8,11 @@ const LOGGER = new Logger('CONFIG', LogLevels.INFO)
 export const CONFIG = {
   ALPHA_AUTH_DATABASE_CONN: 'mongodb://127.0.0.1:4242/auth',
 
-  ALPHA_AUTH_REST_PROTOCOL: 'http',
-  ALPHA_AUTH_REST_HOST: 'localhost',
   ALPHA_AUTH_REST_PORT: '8090',
   ALPHA_AUTH_REST_ROOT: 'rest/api',
+
+  ALPHA_AUTH_REST_PROTOCOL: 'http',
+  ALPHA_AUTH_REST_HOST: 'localhost',
   ALPHA_AUTH_REST_ENVIRONMENT: 'local',
 
   ALPHA_AUTH_SMTP_HOST: '',
