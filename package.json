@@ -6,12 +6,13 @@
   "license": "ISC",
   "main": "index.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "npm run tsc",
     "deploy": "npm run build && npm run start",
     "install-local": "npm i && npm link alpha-auth-common",
     "postinstall": "npm update alpha-auth-common",
-    "start": "node --inspect=5858 -r ts-node/register ./src/index.ts",
+    "start": "node dist",
     "start:dev": "nodemon --inspect './src/index'",
+    "tsc": "tsc -p tsconfig.json",
     "test": "jest -i",
     "test-coverage": "jest --i --coverage"
   },
