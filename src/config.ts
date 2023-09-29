@@ -3,7 +3,7 @@ import  {
   LogLevels
 } from '@uncover/js-utils-logger'
 
-const LOGGER = new Logger('CONFIG')
+const LOGGER = new Logger('CONFIG', LogLevels.INFO)
 //
 export const CONFIG = {
   ALPHA_AUTH_DATABASE_CONN: 'mongodb://127.0.0.1:4242/auth',
