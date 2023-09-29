@@ -3,7 +3,7 @@ import express, {
   Response
 } from 'express'
 
-import { Logger } from '@uncover/js-utils-logger'
+import { LogLevels, Logger } from '@uncover/js-utils-logger'
 
 import {
   HttpUtils,
@@ -23,7 +23,7 @@ import {
 import { CONFIG } from '../config'
 import { useNotFound } from './middleware/useNotFound'
 
-const LOGGER = new Logger('REST')
+const LOGGER = new Logger('REST', LogLevels.DEBUG)
 
 export const optionsRoute = (req: any, res: any, next: any) => {
   LOGGER.debug('optionsRoute')
