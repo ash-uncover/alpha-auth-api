@@ -40,7 +40,7 @@ app.use(useDebugRequest)
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
-app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/health`, healthRouter)
+app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/v1/health`, healthRouter)
 
 app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/v1/auth`, authRouterV1)
 
