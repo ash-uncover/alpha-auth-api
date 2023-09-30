@@ -17,11 +17,10 @@ import ERRORS, {
   sendError
 } from '../servlet-error'
 
-import { Logger } from '@uncover/js-utils-logger'
 import { HttpUtils } from '@uncover/js-utils'
 import { User } from 'alpha-auth-common/build/services/auth/auth.model'
+import { REST_LOGGER } from '../logger'
 
-const LOGGER = new Logger('REST-USERS')
 const multer = require('multer')
 
 // Create router
@@ -55,12 +54,12 @@ export const patchUser = function (
     defaultPut(SCHEMAS.USERS, req, res, next, (error) => {
       if (error && error.code === 11000) {
         if (error.message.indexOf('username') !== -1) {
-          sendError(LOGGER, res, ERRORS.USER_USERNAME_INUSE)
+          sendError(REST_LOGGER, res, ERRORS.USER_USERNAME_INUSE)
         } else if (error.message.indexOf('email') !== -1) {
-          sendError(LOGGER, res, ERRORS.USER_EMAIL_INUSE)
+          sendError(REST_LOGGER, res, ERRORS.USER_EMAIL_INUSE)
         }
       } else if (error && error.name === 'ValidationError') {
-        sendError(LOGGER, res, {
+        sendError(REST_LOGGER, res, {
           status: HttpUtils.HttpStatus.BAD_REQUEST,
           error: error.message
         })

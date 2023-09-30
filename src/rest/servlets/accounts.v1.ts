@@ -25,15 +25,13 @@ import {
   AccountStatuses
 } from '../../lib/AccountStatus'
 
-import { Logger } from '@uncover/js-utils-logger'
 import { HttpUtils } from '@uncover/js-utils'
 
 import ERRORS, { sendError } from '../servlet-error'
 import { nextToken } from '../../lib/TokenGenerator'
 import { CONFIG } from '../../config'
 import { AccountTokenRecover, AccountTokenRegister, Credentials, CredentialsUsername } from 'alpha-auth-common/build/services/auth/auth.model'
-
-const LOGGER = new Logger('REST-ACCOUNTS')
+import { REST_LOGGER } from '../logger'
 
 // Create router
 
@@ -56,7 +54,7 @@ export const postAccountRegister = async (
     let accountData = prevAccount
     if (prevAccount) {
       if (prevAccount.status !== AccountStatuses.REGISTERING) {
-        sendError(LOGGER, res, ERRORS.AUTH_REGISTER_ACCOUNT_EXISTS)
+        sendError(REST_LOGGER, res, ERRORS.AUTH_REGISTER_ACCOUNT_EXISTS)
         return
       }
     } else {
@@ -96,14 +94,14 @@ export const postAccountRegister = async (
     }
     transport.sendMail(message, (err, info) => {
       if (err) {
-        LOGGER.error(err)
-        sendError(LOGGER, res, ERRORS.AUTH_REGISTER_MAIL_ERROR)
+        REST_LOGGER.error(err)
+        sendError(REST_LOGGER, res, ERRORS.AUTH_REGISTER_MAIL_ERROR)
       } else {
         res.status(HttpUtils.HttpStatus.CREATED).send()
       }
     })
   } catch (error) {
-    sendError(LOGGER, res, ERRORS.INTERNAL)
+    sendError(REST_LOGGER, res, ERRORS.INTERNAL)
   }
 }
 accountsRouterV1.post('/register', postAccountRegister)
@@ -145,13 +143,13 @@ export const putAccountRegister = async (
     // check if account can be created
     const account = await SCHEMAS.ACCOUNTS.model.findOne({ username })
     if (!account) {
-      sendError(LOGGER, res, ERRORS.AUTH_REGISTER_CONFIRM_ACCOUNT_INVALID)
+      sendError(REST_LOGGER, res, ERRORS.AUTH_REGISTER_CONFIRM_ACCOUNT_INVALID)
     } else if (account.status !== AccountStatuses.REGISTERING) {
-      sendError(LOGGER, res, ERRORS.AUTH_REGISTER_CONFIRM_ACCOUNT_EXISTS)
+      sendError(REST_LOGGER, res, ERRORS.AUTH_REGISTER_CONFIRM_ACCOUNT_EXISTS)
     } else if (account.actionToken !== token) {
-      sendError(LOGGER, res, ERRORS.AUTH_REGISTER_CONFIRM_TOKEN_INVALID)
+      sendError(REST_LOGGER, res, ERRORS.AUTH_REGISTER_CONFIRM_TOKEN_INVALID)
     } else if (!account.actionDate || ((new Date().getTime() - account.actionDate.getTime()) > 3600000)) {
-      sendError(LOGGER, res, ERRORS.AUTH_REGISTER_CONFIRM_TOKEN_EXPIRED)
+      sendError(REST_LOGGER, res, ERRORS.AUTH_REGISTER_CONFIRM_TOKEN_EXPIRED)
     } else {
       account.status = AccountStatuses.ACTIVE
       account.actionToken = null
@@ -160,7 +158,7 @@ export const putAccountRegister = async (
       res.status(HttpUtils.HttpStatus.OK).send()
     }
   } catch (error) {
-    sendError(LOGGER, res, ERRORS.INTERNAL)
+    sendError(REST_LOGGER, res, ERRORS.INTERNAL)
   }
 }
 accountsRouterV1.put('/register', putAccountRegister)

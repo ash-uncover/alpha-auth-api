@@ -4,5 +4,6 @@ __coverage__
 .deployment
 .vscode
 config.json
+configuration.json
 functions
 uploads

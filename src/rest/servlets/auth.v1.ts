@@ -30,8 +30,8 @@ export const postAuth = async (
     username,
     password,
   } = req.body
-
   const account = await AccountModel.findOne({ username, password }).exec()
+
   if (!account) {
     return res
       .status(HttpUtils.HttpStatus.UNAUTHORIZED)

@@ -1,11 +1,9 @@
-import { Logger } from '@uncover/js-utils-logger'
-
-const LOGGER = new Logger('useDebugRequest')
+import { REST_LOGGER } from '../logger'
 
 export const useDebugRequest = function (req: any, res: any, next: any) {
-  LOGGER.info(`${req.method} ${req.url}`)
+  REST_LOGGER.info(`${req.method} ${req.url}`)
   if (req.body) {
-    LOGGER.debug(JSON.stringify(req.body))
+    REST_LOGGER.debug(JSON.stringify(req.body))
   }
   next()
 }
