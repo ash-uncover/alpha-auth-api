@@ -21,6 +21,9 @@ export const getHealth = async (
 ) => {
   res
     .status(HttpUtils.HttpStatus.OK)
-    .send('<h4>ALPHA AUTH API</h4><p>Health Check OK</p>')
+    .json({
+      server: true,
+      database: true
+    })
 }
 healthRouter.get('/', getHealth)
