@@ -43,9 +43,6 @@ app.use(express.json())
 app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/v1/health`, healthRouter)
 
 app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/v1/auth`, authRouterV1)
-
-app.use(useAuth)
-
 app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/v1/accounts`, accountsRouterV1)
 app.use(`${CONFIG.ALPHA_AUTH_REST_ROOT}/v1/users`, usersRouterV1)
 

@@ -54,8 +54,6 @@ export const postAuth = async (
 }
 authRouterV1.post('/', postAuth)
 
-authRouterV1.use(useAuth)
-
 // GET '/'
 
 export const getAuth = async (
@@ -74,7 +72,7 @@ export const getAuth = async (
     .status(HttpUtils.HttpStatus.OK)
     .json(user)
 }
-authRouterV1.get('/', getAuth)
+authRouterV1.get('/', useAuth, getAuth)
 
 // DELETE '/'
 
@@ -88,4 +86,4 @@ export const deleteAuth = async (
     .status(HttpUtils.HttpStatus.OK)
     .send()
 }
-authRouterV1.delete('/', deleteAuth)
+authRouterV1.delete('/', useAuth, deleteAuth)

@@ -20,6 +20,7 @@ import ERRORS, {
 import { HttpUtils } from '@uncover/js-utils'
 import { User } from 'alpha-auth-common/build/services/auth/auth.model'
 import { REST_LOGGER } from '../logger'
+import { useAuth } from '../middleware'
 
 const multer = require('multer')
 
@@ -40,7 +41,7 @@ export const getUser = function (
     res.status(HttpUtils.HttpStatus.ERROR).send(error)
   }
 }
-usersRouterV1.get('/:userId', getUser)
+usersRouterV1.get('/:userId', useAuth, getUser)
 
 
 // PATCH '/:userId
@@ -71,7 +72,7 @@ export const patchUser = function (
     res.status(HttpUtils.HttpStatus.ERROR).send(error)
   }
 }
-usersRouterV1.patch('/:userId', patchUser)
+usersRouterV1.patch('/:userId', useAuth, patchUser)
 
 
 // POST /:userId/avatar
@@ -94,4 +95,4 @@ export const postUserAvatar = function (
     res.status(HttpUtils.HttpStatus.OK).json({ file: req.file })
   })
 }
-usersRouterV1.post('/:userId/avatar', postUserAvatar)
+usersRouterV1.post('/:userId/avatar', useAuth, postUserAvatar)

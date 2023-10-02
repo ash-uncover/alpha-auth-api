@@ -32,6 +32,7 @@ import { nextToken } from '../../lib/TokenGenerator'
 import { CONFIG } from '../../config'
 import { AccountTokenRecover, AccountTokenRegister, Credentials, CredentialsUsername } from 'alpha-auth-common/build/services/auth/auth.model'
 import { REST_LOGGER } from '../logger'
+import { useAuth } from '../middleware'
 
 // Create router
 
@@ -87,7 +88,7 @@ export const postAccountRegister = async (
       }
     })
     const message = {
-      from: 'auth-service@alpha.com',
+      from: 'auth-service@do-not-reply.alpha.com',
       to: username,
       subject: 'Alpha Account Creation',
       html: `<p>Enter the following code</p><h1>${accountData.actionToken}</h1><p>Best Regards</p>`
@@ -105,28 +106,6 @@ export const postAccountRegister = async (
   }
 }
 accountsRouterV1.post('/register', postAccountRegister)
-
-/*
-export const postAccount = async (req, res, next) => {
-  // check if account can be created
-
-  // create user
-  const user = new SCHEMAS.USERS.model()
-  await user.save()
-  // create temporary account
-  const accountData = removeReserved(req.body)
-  accountData.type = 'AP'
-  accountData.userId = user.id
-  accountData.status = AccountStatus.REGISTERING
-  accountData.actionToken = uuidv4()
-  try {
-    defaultPost(SCHEMAS.ACCOUNTS, req, res, next, null)
-  } catch (error) {
-    res.send(500, error)
-  }
-}
-*/
-
 
 // PUT /register
 
@@ -216,7 +195,7 @@ export const getAccount = async (
   next: () => void
 ) => {
 }
-accountsRouterV1.get('/:accountId', getAccount)
+accountsRouterV1.get('/:accountId', useAuth, getAccount)
 
 
 // PATCH /:accountId
@@ -227,4 +206,4 @@ export const patchAccount = async (
   next: () => void
 ) => {
 }
-accountsRouterV1.patch('/:accountId', patchAccount)
+accountsRouterV1.patch('/:accountId', useAuth, patchAccount)
